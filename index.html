@@ -18,7 +18,7 @@ h1{font-size:clamp(26px,4vw,38px);margin:24px 0 4px;line-height:1.25}
 h2{font-size:20px;margin:0 0 10px}h3{font-size:17px;margin:0 0 8px}
 .goal{margin:0 0 18px;color:var(--sub)}
 .wrap{display:grid;gap:18px;grid-template-columns:1fr;padding-bottom:40px}
-@media(min-width:1000px){.wrap{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);align-items:start}#lab{position:sticky;top:12px}}
+@media(min-width:1000px){.wrap{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);align-items:start}#lab{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto}}
 .card{background:var(--panel);border:1.5px solid var(--line);border-radius:10px;padding:16px}
 svg{width:100%;height:auto;display:block}
 .beamr{fill:var(--beam)}.tick{stroke:var(--panel);stroke-width:2}.num{fill:var(--panel);font-size:12px;text-anchor:middle;font-weight:700}
@@ -29,7 +29,7 @@ svg{width:100%;height:auto;display:block}
 @media(prefers-reduced-motion:reduce){#beam,.wg{transition:none}}
 #status{margin:8px 0 12px;padding:8px 12px;border-radius:8px;border:1.5px solid var(--line);font-weight:700;text-align:center}
 #status.bal{border-color:var(--ok);color:var(--ok)}
-.sides{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sides{display:grid;grid-template-columns:1fr;gap:8px}.side h3{margin:0 0 6px;font-size:15px}
 .side{border:1.5px solid var(--line);border-radius:8px;padding:10px 12px}
 .side label{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:15px;margin-bottom:8px}
 select,input,textarea{font:inherit;color:var(--ink);background:var(--panel);border:1.5px solid var(--line);border-radius:6px;padding:4px 8px}
@@ -40,16 +40,16 @@ button{font:inherit;cursor:pointer;border-radius:8px;border:1.5px solid var(--ac
 .stp button{width:38px;padding:0;font-size:20px}
 button.pri{background:var(--acc);color:var(--accT);font-weight:700}
 :focus-visible{outline:3px solid var(--wt);outline-offset:2px}
-.holes{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.holes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
 .hole{display:flex;align-items:center;justify-content:space-between;gap:2px;border:1.5px solid var(--line);border-radius:6px;padding:2px 4px;font-size:14px}
 .hole.on{border-color:var(--wt);border-width:2px}.hole b{white-space:nowrap}
 .hole button{width:30px;min-height:30px;padding:0;font-size:18px}.hole output{min-width:1.2em;text-align:center;font-weight:700}
-.wt{cursor:pointer}td:nth-child(2) input,td:nth-child(3) input{min-width:9em}td:nth-child(4) input,td:nth-child(5) input{min-width:8em}
+.wt{cursor:pointer}
 .msg{font-size:14px;color:var(--sub);margin:8px 0 0;min-height:1.6em}
 .hint{font-size:14px;color:var(--sub)}
 ol.steps{margin:0;padding-left:22px}
 .who{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}.who label{display:flex;gap:6px;align-items:center}.who input{width:8em}
-.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;min-width:640px;font-size:14px}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;table-layout:fixed;font-size:13px}td textarea{min-height:0;width:100%;height:4.6em;resize:none;border-color:transparent;padding:4px;font-size:13px;line-height:1.4}td select{padding:4px 0}
 th,td{border:1.5px solid var(--line);padding:4px;text-align:center}th{font-weight:700;background:var(--bg)}
 td input,td select{width:100%;min-width:3.4em;text-align:center;border-color:transparent;padding:4px 2px}
 .q{margin:16px 0 0}.q p{margin:0 0 6px;font-weight:700}
@@ -68,7 +68,7 @@ textarea{width:100%;min-height:76px;resize:vertical}
 <main class="wrap">
 <section id="lab" class="card noprint" aria-label="實驗裝置">
 <h2>實驗裝置</h2>
-<svg viewBox="0 0 640 340" role="img" aria-label="蹺蹺板槓桿，左右兩邊各可掛鉤碼">
+<svg viewBox="0 80 640 260" role="img" aria-label="蹺蹺板槓桿，左右兩邊各可掛鉤碼">
 <g id="beam">
 <rect class="beamr" x="40" y="160" width="560" height="14" rx="4"/>
 <g id="notches"></g>
@@ -97,7 +97,7 @@ textarea{width:100%;min-height:76px;resize:vertical}
 </ol>
 <h3 style="margin-top:16px">實驗記錄表</h3>
 <div class="tw"><table>
-<thead><tr><th>組別</th><th>左邊掛法</th><th>右邊掛法</th><th>左邊：自己計算</th><th>右邊：自己計算</th><th>平衡嗎？</th></tr></thead>
+<colgroup><col style="width:34px"><col><col><col><col><col style="width:58px"></colgroup><thead><tr><th>組別</th><th>左邊掛法</th><th>右邊掛法</th><th>左邊算式</th><th>右邊算式</th><th>平衡嗎？</th></tr></thead>
 <tbody id="rows"></tbody></table></div>
 <div class="q"><p>問題 1　左右兩邊的鉤碼數相同時，要讓蹺蹺板平衡，兩邊的力臂必須怎麼樣？</p><textarea aria-label="問題1"></textarea></div>
 <div class="q"><p>問題 2　觀察記錄表，平衡的那幾組，左右兩邊各孔「個數 × 力臂」相加的總和有什麼關係？不平衡的組別呢？</p><textarea aria-label="問題2"></textarea></div>
@@ -157,7 +157,7 @@ function render(){
  else el.textContent=tl>tr?'左邊下沉':'右邊下沉';
 }
 const tb=$('#rows');
-for(let i=1;i<=6;i++)tb.insertAdjacentHTML('beforeend',`<tr><td>${i}</td>`+'<td><input></td>'.repeat(4)+'<td><select aria-label="平衡嗎"><option></option><option>是</option><option>否</option></select></td></tr>');
+for(let i=1;i<=6;i++)tb.insertAdjacentHTML('beforeend',`<tr><td>${i}</td>`+'<td><textarea rows="3"></textarea></td>'.repeat(4)+'<td><select aria-label="平衡嗎"><option></option><option>是</option><option>否</option></select></td></tr>');
 const fields=()=>$$('#sheet input,#sheet textarea,#sheet select'),KEY='lever-sheet-v2';
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(fields().map(f=>f.value)))}catch(e){}};
 try{const v=JSON.parse(localStorage.getItem(KEY)||'null');if(v)fields().forEach((f,i)=>{if(v[i]!=null)f.value=v[i]})}catch(e){}
@@ -166,9 +166,9 @@ const fmt=a=>a.map((n,p)=>n?`${n}個掛第${p}格`:'').filter(Boolean).join('、
 $('#rec').onclick=()=>{
  const m=$('#recmsg'),trs=$$('#rows tr');
  if(!cnt(st.l)&&!cnt(st.r)){m.textContent='請先掛上鉤碼再記錄。';return}
- const row=trs.find(r=>[...r.querySelectorAll('input')].slice(0,2).every(i=>!i.value));
+ const row=trs.find(r=>[...r.querySelectorAll('textarea')].slice(0,2).every(i=>!i.value));
  if(!row){m.textContent='表格已經填滿，可以修改或清除舊資料。';return}
- const ins=row.querySelectorAll('input');ins[0].value=fmt(st.l);ins[1].value=fmt(st.r);
+ const ins=row.querySelectorAll('textarea');ins[0].value=fmt(st.l);ins[1].value=fmt(st.r);
  row.querySelector('select').value=sum(st.l)===sum(st.r)?'是':'否';
  save();m.textContent=`已記錄到第 ${trs.indexOf(row)+1} 組，接著請自己寫出兩邊的算式與總和。`;
 };
@@ -179,9 +179,9 @@ $('#sub').onclick=async()=>{
  const m=$('#subm'),w=$$('.who input').map(i=>i.value.trim());
  if(!SCRIPT_URL){m.textContent='尚未設定回傳網址。';m.className='no';return}
  if(w.some(x=>!x)){m.textContent='請先填好班級、座號和姓名。';m.className='no';return}
- const ta=$$('#sheet textarea').map(t=>t.value),bl=$$('.blank').map(t=>t.value);
+ const ta=$$('.q textarea').map(t=>t.value),bl=$$('.blank').map(t=>t.value);
  const d={班級:w[0],座號:w[1],姓名:w[2]};
- $$('#rows tr').forEach((r,i)=>{const c=[...r.querySelectorAll('input')].map(x=>x.value),n=i+1;
+ $$('#rows tr').forEach((r,i)=>{const c=[...r.querySelectorAll('textarea')].map(x=>x.value),n=i+1;
   d[`第${n}組左邊掛法`]=c[0];d[`第${n}組右邊掛法`]=c[1];d[`第${n}組左邊計算`]=c[2];d[`第${n}組右邊計算`]=c[3];d[`第${n}組平衡`]=r.querySelector('select').value});
  Object.assign(d,{問題1:ta[0],問題2:ta[1],問題3空格一:bl[0],問題3空格二:bl[1],問題4答案:$('#ans').value,問題5心得:ta[2]});
  $('#sub').disabled=true;m.className='';m.textContent='送出中…';
