@@ -68,7 +68,7 @@ textarea{width:100%;min-height:76px;resize:vertical}
 <main class="wrap">
 <section id="lab" class="card noprint" aria-label="實驗裝置">
 <h2>實驗裝置</h2>
-<svg viewBox="0 80 640 260" role="img" aria-label="蹺蹺板槓桿，左右兩邊各可掛鉤碼">
+<svg viewBox="0 80 640 260" role="img" aria-label="蹺蹺板槓桿，左右兩邊各可掛砝碼">
 <g id="beam">
 <rect class="beamr" x="40" y="160" width="560" height="14" rx="4"/>
 <g id="notches"></g>
@@ -80,9 +80,9 @@ textarea{width:100%;min-height:76px;resize:vertical}
 </svg>
 <div id="status" role="status" aria-live="polite"></div>
 <div class="sides"><div class="side" data-side="l"><h3>左邊（共 <span class="tot">0 個</span>）</h3><div class="holes"></div></div><div class="side" data-side="r"><h3>右邊（共 <span class="tot">0 個</span>）</h3><div class="holes"></div></div></div>
-<div class="row"><button type="button" class="pri" id="rec">記錄這組數據到學習單</button><button type="button" id="rst">清空鉤碼</button></div>
+<div class="row"><button type="button" class="pri" id="rec">記錄這組數據到學習單</button><button type="button" id="rst">清空砝碼</button></div>
 <p class="msg" id="recmsg"></p>
-<p class="hint">每一邊都有 6 個孔，想掛哪一孔就在那一孔按＋，可以同時掛好幾個孔。也可以直接點橫桿上的孔加掛鉤碼，點掛著的鉤碼則取下一個。每一格的距離都相等。</p>
+<p class="hint">每一邊都有 6 個孔，想掛哪一孔就在那一孔按＋，可以同時掛好幾個孔。也可以直接點橫桿上的孔加掛砝碼，點掛著的砝碼則取下一個。每一格的距離都相等。</p>
 </section>
 
 <section id="sheet" class="card" aria-label="學習單">
@@ -90,7 +90,7 @@ textarea{width:100%;min-height:76px;resize:vertical}
 <div class="who"><label>班級<input aria-label="班級"></label><label>座號<input aria-label="座號"></label><label>姓名<input aria-label="姓名"></label></div>
 <h3>實驗步驟</h3>
 <ol class="steps">
-<li>在左右兩邊任選要掛的孔（可以同時掛好幾個孔），掛上鉤碼，觀察蹺蹺板傾向哪一邊。</li>
+<li>在左右兩邊任選要掛的孔（可以同時掛好幾個孔），掛上砝碼，觀察蹺蹺板傾向哪一邊。</li>
 <li>找出能讓蹺蹺板保持水平的掛法。</li>
 <li>按「記錄這組數據到學習單」，至少記錄 6 組，平衡與不平衡的都要有。</li>
 <li>自己算出左、右兩邊每個孔的「個數 × 力臂」再相加，把算式與總和寫在表格，例如 2×3＋1×5＝11。</li>
@@ -99,11 +99,11 @@ textarea{width:100%;min-height:76px;resize:vertical}
 <div class="tw"><table>
 <colgroup><col style="width:34px"><col><col><col><col><col style="width:58px"></colgroup><thead><tr><th>組別</th><th>左邊掛法</th><th>右邊掛法</th><th>左邊算式</th><th>右邊算式</th><th>平衡嗎？</th></tr></thead>
 <tbody id="rows"></tbody></table></div>
-<div class="q"><p>問題 1　左右兩邊的鉤碼數相同時，要讓蹺蹺板平衡，兩邊的力臂必須怎麼樣？</p><textarea aria-label="問題1"></textarea></div>
+<div class="q"><p>問題 1　左右兩邊的砝碼數相同時，要讓蹺蹺板平衡，兩邊的力臂必須怎麼樣？</p><textarea aria-label="問題1"></textarea></div>
 <div class="q"><p>問題 2　觀察記錄表，平衡的那幾組，左右兩邊各孔「個數 × 力臂」相加的總和有什麼關係？不平衡的組別呢？</p><textarea aria-label="問題2"></textarea></div>
 <div class="q"><p>問題 3　整理出槓桿的平衡條件：</p>
 施力 × <input class="blank" aria-label="空格一"> ＝ 抗力 × <input class="blank" aria-label="空格二"></div>
-<div class="q"><p>問題 4　左邊 3 個鉤碼掛在距離支點 4 格處，右邊要掛在距離支點 6 格處，需要掛幾個同樣的鉤碼才能平衡？</p>
+<div class="q"><p>問題 4　左邊 3 個砝碼掛在距離支點 4 格處，右邊要掛在距離支點 6 格處，需要掛幾個同樣的砝碼才能平衡？</p>
 <input id="ans" type="number" inputmode="numeric" style="width:5em" aria-label="答案"> 個　<button type="button" id="chk">檢查答案</button> <span id="fb" role="status"></span></div>
 <div class="q"><p>問題 5　寫下你的實驗心得，或是還想探究的問題。</p><textarea aria-label="問題5"></textarea></div>
 <div class="row noprint"><button type="button" class="pri" id="sub">送出學習單給老師</button><span id="subm" role="status"></span></div>
@@ -130,7 +130,7 @@ function add(k,p,d){st[k][p]=Math.max(0,Math.min(MAXH,st[k][p]+d));render()}
  for(let p=1;p<=6;p++){
   const x=CX+(k==='l'?-1:1)*p*U;
   wg.insertAdjacentHTML('beforeend',`<g class="wg" id="w-${k}${p}" data-side="${k}" data-pos="${p}" style="transform-origin:${x}px ${CY}px"></g>`);
-  box.insertAdjacentHTML('beforeend',`<div class="hole" data-p="${p}"><b>第${p}格</b><button type="button" data-d="-1" aria-label="${nm}邊第${p}格減少一個鉤碼">−</button><output>0</output><button type="button" data-d="1" aria-label="${nm}邊第${p}格增加一個鉤碼">＋</button></div>`);}
+  box.insertAdjacentHTML('beforeend',`<div class="hole" data-p="${p}"><b>第${p}格</b><button type="button" data-d="-1" aria-label="${nm}邊第${p}格減少一個砝碼">−</button><output>0</output><button type="button" data-d="1" aria-label="${nm}邊第${p}格增加一個砝碼">＋</button></div>`);}
  box.addEventListener('click',e=>{const b=e.target.closest('button');if(b)add(k,+b.closest('.hole').dataset.p,+b.dataset.d)});
 });
 $$('.hit').forEach(c=>c.onclick=()=>add(c.dataset.side,+c.dataset.pos,1));
@@ -152,7 +152,7 @@ function render(){
   $(`.side[data-side=${k}] .tot`).textContent=cnt(st[k])+' 個';
  });
  const el=$('#status');el.className='';
- if(!tl&&!tr)el.textContent='還沒有掛鉤碼';
+ if(!tl&&!tr)el.textContent='還沒有掛砝碼';
  else if(tl===tr){el.textContent='蹺蹺板平衡了！';el.className='bal'}
  else el.textContent=tl>tr?'左邊下沉':'右邊下沉';
 }
@@ -165,7 +165,7 @@ $('#sheet').addEventListener('input',save);$('#sheet').addEventListener('change'
 const fmt=a=>a.map((n,p)=>n?`${n}個掛第${p}格`:'').filter(Boolean).join('、')||'無';
 $('#rec').onclick=()=>{
  const m=$('#recmsg'),trs=$$('#rows tr');
- if(!cnt(st.l)&&!cnt(st.r)){m.textContent='請先掛上鉤碼再記錄。';return}
+ if(!cnt(st.l)&&!cnt(st.r)){m.textContent='請先掛上砝碼再記錄。';return}
  const row=trs.find(r=>[...r.querySelectorAll('textarea')].slice(0,2).every(i=>!i.value));
  if(!row){m.textContent='表格已經填滿，可以修改或清除舊資料。';return}
  const ins=row.querySelectorAll('textarea');ins[0].value=fmt(st.l);ins[1].value=fmt(st.r);
@@ -173,7 +173,7 @@ $('#rec').onclick=()=>{
  save();m.textContent=`已記錄到第 ${trs.indexOf(row)+1} 組，接著請自己寫出兩邊的算式與總和。`;
 };
 $('#chk').onclick=()=>{const ok=+$('#ans').value===2,f=$('#fb');
- f.textContent=ok?'答對了！3 × 4 ＝ 12，右邊 2 × 6 ＝ 12。':'再算算看：兩邊的「鉤碼數 × 力臂」要相等。';f.className=ok?'ok':'no'};
+ f.textContent=ok?'答對了！3 × 4 ＝ 12，右邊 2 × 6 ＝ 12。':'再算算看：兩邊的「砝碼數 × 力臂」要相等。';f.className=ok?'ok':'no'};
 $('#prt').onclick=()=>window.print();
 $('#sub').onclick=async()=>{
  const m=$('#subm'),w=$$('.who input').map(i=>i.value.trim());
