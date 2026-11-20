@@ -30,13 +30,17 @@ th,td{border:1px solid var(--bd);padding:5px;text-align:center}
 .ok{color:var(--ok)}.bad{color:var(--bad)}
 textarea{width:100%;font:inherit;padding:8px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);min-height:70px}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}
+.layout{display:grid;gap:16px;align-items:start}
+@media(min-width:960px){main{max-width:1400px}.layout{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}.pane{position:sticky;top:calc(env(safe-area-inset-top,0px) + 8px);max-height:calc(100vh - 16px);overflow:auto}}
 @media(max-width:520px){.ctl{grid-template-columns:1fr}}
-@media print{.noprint{display:none}body{background:#fff;color:#000}}
+@media print{.noprint,.pane{display:none}body{background:#fff;color:#000}}
 </style></head><body><main>
 <h1>⚖️ 槓桿原理線上實驗</h1>
 <p class="goal"><b>實驗目的：</b>利用槓桿裝置，找出能使蹺蹺板維持平衡的條件。</p>
 
-<div class="card">
+<div class="layout">
+<div class="pane">
+<div class="card" style="margin-top:0">
 <h2>一、實驗操作</h2>
 <p class="goal">槓桿中央是支點，兩邊刻度從 3 cm 到 24 cm。一開始沒有掛任何砝碼：<b>點一下白點掛上 1 個砝碼</b>（每個孔最多 5 個），可以同時掛在好幾個孔；<b>點砝碼可以取下</b>。觀察槓桿如何傾斜。</p>
 <svg id="sv" viewBox="0 0 700 320" role="img" aria-label="槓桿蹺蹺板"></svg>
@@ -48,7 +52,9 @@ textarea{width:100%;font:inherit;padding:8px;border:1px solid var(--bd);border-r
 <p class="goal">提示：想一想，要先自己算算看再按記錄，再看蹺蹺板是否真的平衡。</p>
 </div>
 
-<div class="card">
+</div>
+<div>
+<div class="card" style="margin-top:0">
 <h2>二、學習單</h2>
 <div class="row"><label>班級座號 <input type="text" data-s="cls" size="8"></label><label>姓名 <input type="text" data-s="nm" size="10"></label></div>
 <h3 style="font-size:1rem">0. 先調平衡</h3>
@@ -70,6 +76,7 @@ textarea{width:100%;font:inherit;padding:8px;border:1px solid var(--bd);border-r
 <div class="row noprint"><button class="g" id="gbtn">🧮 檢查我的答案</button><button id="sub">📤 提交給老師</button><span id="subm" class="goal"></span><button class="g" onclick="window.print()">🖨️ 列印學習單</button><span class="goal">答案會自動儲存在這台裝置的瀏覽器中。</span></div>
 <div id="gr" style="margin-top:8px"></div>
 </div>
+</div></div>
 </main>
 <script>
 const $=id=>document.getElementById(id);
