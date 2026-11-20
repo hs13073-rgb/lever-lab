@@ -1,201 +1,150 @@
-<!doctype html>
-<html lang="zh-Hant">
-<head>
-<meta charset="utf-8">
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>槓桿原理線上實驗</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#eaf1f5;--grid:#cfdde6;--ink:#14283a;--sub:#4a6173;--panel:#fff;--line:#b9cad6;--acc:#0b7a75;--accT:#fff;--wt:#f2a900;--wtT:#3a2a00;--ok:#16783f;--no:#b3302a;--beam:#2b4a63;
-box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1a22;--grid:#1b2d38;--ink:#e3edf3;--sub:#9db3c2;--panel:#16252e;--line:#31495a;--acc:#3fc1b8;--accT:#06231f;--wt:#f2b632;--ok:#5fd38c;--no:#ff8a80;--beam:#8fb3cc}}
-:root[data-theme="dark"]{--bg:#0e1a22;--grid:#1b2d38;--ink:#e3edf3;--sub:#9db3c2;--panel:#16252e;--line:#31495a;--acc:#3fc1b8;--accT:#06231f;--wt:#f2b632;--ok:#5fd38c;--no:#ff8a80;--beam:#8fb3cc}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-*{box-sizing:border-box}
-body{margin:0;background-color:var(--bg);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px;color:var(--ink);font:16px/1.7 "Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif}
-header,main{max-width:1180px;margin:0 auto;padding:0 16px}
-h1{font-size:clamp(26px,4vw,38px);margin:24px 0 4px;line-height:1.25}
-h2{font-size:20px;margin:0 0 10px}h3{font-size:17px;margin:0 0 8px}
-.goal{margin:0 0 18px;color:var(--sub)}
-.wrap{display:grid;gap:18px;grid-template-columns:1fr;padding-bottom:40px}
-@media(min-width:1000px){.wrap{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);align-items:start}#lab{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto}}
-.card{background:var(--panel);border:1.5px solid var(--line);border-radius:10px;padding:16px}
+:root{--bg:#f6f7fb;--card:#fff;--tx:#1d2433;--mu:#667085;--bd:#d9deea;--ac:#2563eb;--ok:#16a34a;--bad:#dc2626;--bm:#b45309;--w1:#3b82f6;--w2:#f97316;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12151c;--card:#1b202b;--tx:#e8ebf3;--mu:#9aa3b5;--bd:#303749;--ac:#60a5fa;--bm:#d9a441;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#12151c;--card:#1b202b;--tx:#e8ebf3;--mu:#9aa3b5;--bd:#303749;--ac:#60a5fa;--bm:#d9a441;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.6 "Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif}
+main{max-width:860px;margin:0 auto;padding:16px}
+h1{font-size:1.5rem;margin:.2em 0}h2{font-size:1.15rem;margin:0 0 .5em}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;margin:14px 0}
+.goal{color:var(--mu);margin:0}
 svg{width:100%;height:auto;display:block}
-.beamr{fill:var(--beam)}.tick{stroke:var(--panel);stroke-width:2}.num{fill:var(--panel);font-size:12px;text-anchor:middle;font-weight:700}
-.hit{fill:transparent;cursor:pointer}.hit:hover{fill:rgba(242,169,0,.35)}
-.fulc{fill:var(--acc)}.base{stroke:var(--beam);stroke-width:4}
-.str{stroke:var(--beam);stroke-width:2}.wt{fill:var(--wt);stroke:var(--beam);stroke-width:1.5}.wl{font-size:11px;text-anchor:middle;fill:#3a2a00;font-weight:700}
-#beam,.wg{transition:transform .9s cubic-bezier(.3,1.4,.5,1)}#beam{transform-origin:320px 170px}
-@media(prefers-reduced-motion:reduce){#beam,.wg{transition:none}}
-#status{margin:8px 0 12px;padding:8px 12px;border-radius:8px;border:1.5px solid var(--line);font-weight:700;text-align:center}
-#status.bal{border-color:var(--ok);color:var(--ok)}
-.sides{display:grid;grid-template-columns:1fr;gap:8px}.side h3{margin:0 0 6px;font-size:15px}
-.side{border:1.5px solid var(--line);border-radius:8px;padding:10px 12px}
-.side label{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:15px;margin-bottom:8px}
-select,input,textarea{font:inherit;color:var(--ink);background:var(--panel);border:1.5px solid var(--line);border-radius:6px;padding:4px 8px}
-select{min-height:36px}
-.stp{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:14px;color:var(--sub)}
-.stp output{font-size:22px;font-weight:700;color:var(--ink);min-width:1.5em;text-align:center}
-button{font:inherit;cursor:pointer;border-radius:8px;border:1.5px solid var(--acc);background:transparent;color:var(--acc);padding:6px 14px;min-height:38px}
-.stp button{width:38px;padding:0;font-size:20px}
-button.pri{background:var(--acc);color:var(--accT);font-weight:700}
-:focus-visible{outline:3px solid var(--wt);outline-offset:2px}
-.holes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
-.hole{display:flex;align-items:center;justify-content:space-between;gap:2px;border:1.5px solid var(--line);border-radius:6px;padding:2px 4px;font-size:14px}
-.hole.on{border-color:var(--wt);border-width:2px}.hole b{white-space:nowrap}
-.hole button{width:30px;min-height:30px;padding:0;font-size:18px}.hole output{min-width:1.2em;text-align:center;font-weight:700}
-.wt{cursor:pointer}
-.msg{font-size:14px;color:var(--sub);margin:8px 0 0;min-height:1.6em}
-.hint{font-size:14px;color:var(--sub)}
-ol.steps{margin:0;padding-left:22px}
-.who{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}.who label{display:flex;gap:6px;align-items:center}.who input{width:8em}
-.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;table-layout:fixed;font-size:13px}td textarea{min-height:0;width:100%;height:4.6em;resize:none;border-color:transparent;padding:4px;font-size:13px;line-height:1.4}td select{padding:4px 0}
-th,td{border:1.5px solid var(--line);padding:4px;text-align:center}th{font-weight:700;background:var(--bg)}
-td input,td select{width:100%;min-width:3.4em;text-align:center;border-color:transparent;padding:4px 2px}
-.q{margin:16px 0 0}.q p{margin:0 0 6px;font-weight:700}
-textarea{width:100%;min-height:76px;resize:vertical}
-.blank{width:7em;text-align:center}
-.ok{color:var(--ok)}.no{color:var(--no)}
-.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-@media print{.noprint,#lab{display:none!important}body{background:#fff;color:#000}.wrap{display:block}.card{border:0;padding:0}}
-</style>
-</head>
-<body>
-<header>
-<h1>槓桿原理線上實驗</h1>
-<p class="goal">實驗目的：利用槓桿裝置，找出能使蹺蹺板維持平衡的條件。</p>
-</header>
-<main class="wrap">
-<section id="lab" class="card noprint" aria-label="實驗裝置">
-<h2>實驗裝置</h2>
-<svg viewBox="0 80 640 260" role="img" aria-label="蹺蹺板槓桿，左右兩邊各可掛砝碼">
-<g id="beam">
-<rect class="beamr" x="40" y="160" width="560" height="14" rx="4"/>
-<g id="notches"></g>
-<g id="wgs"></g>
-</g>
-<polygon class="fulc" points="320,174 294,250 346,250"/>
-<line class="base" x1="270" x2="370" y1="252" y2="252"/>
-<text x="320" y="272" text-anchor="middle" font-size="13" fill="currentColor">支點</text>
-</svg>
-<div id="status" role="status" aria-live="polite"></div>
-<div class="sides"><div class="side" data-side="l"><h3>左邊（共 <span class="tot">0 個</span>）</h3><div class="holes"></div></div><div class="side" data-side="r"><h3>右邊（共 <span class="tot">0 個</span>）</h3><div class="holes"></div></div></div>
-<div class="row"><button type="button" class="pri" id="rec">記錄這組數據到學習單</button><button type="button" id="rst">清空砝碼</button></div>
-<p class="msg" id="recmsg"></p>
-<p class="hint">每一邊都有 6 個孔，想掛哪一孔就在那一孔按＋，可以同時掛好幾個孔。也可以直接點橫桿上的孔加掛砝碼，點掛著的砝碼則取下一個。每一格的距離都相等。</p>
-</section>
+#beam{transition:transform .6s cubic-bezier(.3,1.4,.5,1)}
+.ctl{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.side{border:2px solid;border-radius:12px;padding:10px}
+.side.l{border-color:var(--w1)}.side.r{border-color:var(--w2)}
+label{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:6px 0}
+select,input[type=text],input[type=number]{font:inherit;padding:6px 8px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);max-width:100%}
+input.blank{width:4.2em;text-align:center}
+button{font:inherit;padding:8px 14px;border-radius:10px;border:1px solid var(--ac);background:var(--ac);color:#fff;cursor:pointer}
+button.g{background:transparent;color:var(--ac)}
+.st{text-align:center;font-weight:700;margin:6px 0;min-height:1.6em}
+.eq{text-align:center;color:var(--mu)}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+th,td{border:1px solid var(--bd);padding:5px;text-align:center}
+.wrap{overflow-x:auto}
+.ok{color:var(--ok)}.bad{color:var(--bad)}
+textarea{width:100%;font:inherit;padding:8px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);min-height:70px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}
+@media(max-width:520px){.ctl{grid-template-columns:1fr}}
+@media print{.noprint{display:none}body{background:#fff;color:#000}}
+</style></head><body><main>
+<h1>⚖️ 槓桿原理線上實驗</h1>
+<p class="goal"><b>實驗目的：</b>利用槓桿裝置，找出能使蹺蹺板維持平衡的條件。</p>
 
-<section id="sheet" class="card" aria-label="學習單">
-<h2>學習單</h2>
-<div class="who"><label>班級<input aria-label="班級"></label><label>座號<input aria-label="座號"></label><label>姓名<input aria-label="姓名"></label></div>
-<h3>實驗步驟</h3>
-<ol class="steps">
-<li>在左右兩邊任選要掛的孔（可以同時掛好幾個孔），掛上砝碼，觀察蹺蹺板傾向哪一邊。</li>
-<li>找出能讓蹺蹺板保持水平的掛法。</li>
-<li>按「記錄這組數據到學習單」，至少記錄 6 組，平衡與不平衡的都要有。</li>
-<li>自己算出左、右兩邊每個孔的「個數 × 力臂」再相加，把算式與總和寫在表格，例如 2×3＋1×5＝11。</li>
-</ol>
-<h3 style="margin-top:16px">實驗記錄表</h3>
-<div class="tw"><table>
-<colgroup><col style="width:34px"><col><col><col><col><col style="width:58px"></colgroup><thead><tr><th>組別</th><th>左邊掛法</th><th>右邊掛法</th><th>左邊算式</th><th>右邊算式</th><th>平衡嗎？</th></tr></thead>
-<tbody id="rows"></tbody></table></div>
-<div class="q"><p>問題 1　左右兩邊的砝碼數相同時，要讓蹺蹺板平衡，兩邊的力臂必須怎麼樣？</p><textarea aria-label="問題1"></textarea></div>
-<div class="q"><p>問題 2　觀察記錄表，平衡的那幾組，左右兩邊各孔「個數 × 力臂」相加的總和有什麼關係？不平衡的組別呢？</p><textarea aria-label="問題2"></textarea></div>
-<div class="q"><p>問題 3　整理出槓桿的平衡條件：</p>
-施力 × <input class="blank" aria-label="空格一"> ＝ 抗力 × <input class="blank" aria-label="空格二"></div>
-<div class="q"><p>問題 4　左邊 3 個砝碼掛在距離支點 4 格處，右邊要掛在距離支點 6 格處，需要掛幾個同樣的砝碼才能平衡？</p>
-<input id="ans" type="number" inputmode="numeric" style="width:5em" aria-label="答案"> 個　<button type="button" id="chk">檢查答案</button> <span id="fb" role="status"></span></div>
-<div class="q"><p>問題 5　寫下你的實驗心得，或是還想探究的問題。</p><textarea aria-label="問題5"></textarea></div>
-<div class="row noprint"><button type="button" class="pri" id="sub">送出學習單給老師</button><span id="subm" role="status"></span></div>
-<div class="row noprint"><button type="button" id="prt">列印或存成 PDF</button><button type="button" id="clr">清除全部作答</button></div>
-<p class="hint noprint">作答內容會自動保存在這台裝置的瀏覽器裡。</p>
-</section>
+<div class="card">
+<h2>一、實驗操作</h2>
+<p class="goal">槓桿中央是支點，兩邊刻度從 3 cm 到 24 cm。一開始沒有掛任何砝碼：<b>點一下白點掛上 1 個砝碼</b>（每個孔最多 5 個），可以同時掛在好幾個孔；<b>點砝碼可以取下</b>。觀察槓桿如何傾斜。</p>
+<svg id="sv" viewBox="0 0 700 320" role="img" aria-label="槓桿蹺蹺板"></svg>
+<div class="st" id="st"></div>
+<div class="side" style="border-color:var(--bd);margin-bottom:12px"><b>步驟一：先調平衡</b>　<span class="goal">一開始槓桿是歪的。調整兩端的灰色平衡螺帽（往外＝該端變重），直到槓桿水平，才能掛砝碼。</span>
+<div class="row"><span>左螺帽</span><button class="g" data-n="l-">往內</button><button class="g" data-n="l+">往外</button><span style="width:1em"></span><span>右螺帽</span><button class="g" data-n="r-">往內</button><button class="g" data-n="r+">往外</button></div></div>
+<div class="ctl"><div class="side l" id="ls"></div><div class="side r" id="rs"></div></div>
+<div class="row"><button id="rec">📝 記錄這一組數據</button><button class="g" id="rst">🧹 清空砝碼</button></div>
+<p class="goal">提示：想一想，要先自己算算看再按記錄，再看蹺蹺板是否真的平衡。</p>
+</div>
+
+<div class="card">
+<h2>二、學習單</h2>
+<div class="row"><label>班級座號 <input type="text" data-s="cls" size="8"></label><label>姓名 <input type="text" data-s="nm" size="10"></label></div>
+<h3 style="font-size:1rem">0. 先調平衡</h3>
+<p>一開始槓桿向 <select data-s="b1"><option value="">請選擇</option><option>左</option><option>右</option></select> 邊傾斜，我調整平衡螺帽後變水平。為什麼要先調平衡才開始實驗？<br><input type="text" data-s="b2" style="width:100%"></p>
+<h3 style="font-size:1rem">1. 實驗記錄表（力矩 ＝ 重量 × 距離）</h3>
+<div class="wrap"><table><thead><tr><th>#</th><th>左邊掛法（個×cm）</th><th>左 力矩</th><th>右邊掛法（個×cm）</th><th>右 力矩</th><th>結果</th><th class="noprint"></th></tr></thead><tbody id="tb"></tbody></table></div>
+<p class="goal">請至少記錄 5 組，其中至少 3 組是「平衡」的。</p>
+<h3 style="font-size:1rem">2. 預測與觀察</h3>
+<p>左邊 2 個砝碼掛在 9 cm 處，右邊 3 個砝碼掛在 <input class="blank" type="text" data-s="p1"> cm 處，我預測會平衡。實驗後結果：<select data-s="p1r"><option value="">請選擇</option><option>平衡</option><option>左傾</option><option>右傾</option></select></p>
+<h3 style="font-size:1rem">3. 發現規律</h3>
+<p>當蹺蹺板平衡時，左邊的 <input class="blank" type="text" data-s="c1"> × <input class="blank" type="text" data-s="c2"> ＝ 右邊的 <input class="blank" type="text" data-s="c3"> × <input class="blank" type="text" data-s="c4">。<br><span class="goal">（請填「重量」或「距離」）</span></p>
+<h3 style="font-size:1rem">4. 挑戰題（做完按「檢查」）</h3>
+<p>(a) 左邊 4 個砝碼掛在 6 cm 處，右邊 2 個砝碼要掛在 <input class="blank" type="number" data-s="q1" min="0"> cm 處才會平衡。 <button class="g" onclick="chk('q1',12,this)">檢查</button> <span></span></p>
+<p>(b) 左邊 3 個砝碼掛在 12 cm 處，右邊掛在 6 cm 處，需要 <input class="blank" type="number" data-s="q2" min="0"> 個砝碼才會平衡。 <button class="g" onclick="chk('q2',6,this)">檢查</button> <span></span></p>
+<p>(c) 左邊 1 個砝碼掛在 24 cm 處，右邊用 2 個砝碼，應掛在 <input class="blank" type="number" data-s="q3" min="0"> cm 處。 <button class="g" onclick="chk('q3',12,this)">檢查</button> <span></span></p>
+<p>(d)【多孔掛法】左邊在 6 cm 處掛 3 個、在 12 cm 處掛 1 個；右邊在 15 cm 處掛 1 個，另外還要在 3 cm 處再掛 <input class="blank" type="number" data-s="q4" min="0"> 個，槓桿才會平衡。（可以用上方裝置驗證） <button class="g" onclick="chk('q4',5,this)">檢查</button> <span></span></p>
+<h3 style="font-size:1rem">5. 我的結論與生活例子</h3>
+<textarea data-s="sum" placeholder="用自己的話說明：蹺蹺板要平衡，需要什麼條件？生活中哪裡也用到槓桿？"></textarea>
+<div class="row noprint"><button class="g" id="gbtn">🧮 檢查我的答案</button><button id="sub">📤 提交給老師</button><span id="subm" class="goal"></span><button class="g" onclick="window.print()">🖨️ 列印學習單</button><span class="goal">答案會自動儲存在這台裝置的瀏覽器中。</span></div>
+<div id="gr" style="margin-top:8px"></div>
+</div>
 </main>
 <script>
-(()=>{
-const SCRIPT_URL='https://script.google.com/macros/s/AKfycbwXED5YIUa7V2Vi_Ept2Vriyki63b-ef8nwDsCweCbu_NSDU-3w9q2YC3uUEmrR_T-uIg/exec'; // 貼上 Apps Script 網頁應用程式的網址
-const U=44,CX=320,CY=174,MAXH=6;
-const st={l:Array(7).fill(0),r:Array(7).fill(0)};
-const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-const sum=a=>a.reduce((t,n,i)=>t+n*i,0),cnt=a=>a.reduce((t,n)=>t+n,0);
-let h='';
-for(let i=-6;i<=6;i++){const x=320+i*U;
- h+=`<line class="tick" x1="${x}" x2="${x}" y1="160" y2="174"/>`;
- if(i)h+=`<text class="num" x="${x}" y="153">${Math.abs(i)}</text><circle class="hit" data-side="${i<0?'l':'r'}" data-pos="${Math.abs(i)}" cx="${x}" cy="167" r="16"/>`;}
-$('#notches').innerHTML=h;
-const wg=$('#wgs');
-function add(k,p,d){st[k][p]=Math.max(0,Math.min(MAXH,st[k][p]+d));render()}
-['l','r'].forEach(k=>{
- const nm=k==='l'?'左':'右',box=$(`.side[data-side=${k}] .holes`);
- for(let p=1;p<=6;p++){
-  const x=CX+(k==='l'?-1:1)*p*U;
-  wg.insertAdjacentHTML('beforeend',`<g class="wg" id="w-${k}${p}" data-side="${k}" data-pos="${p}" style="transform-origin:${x}px ${CY}px"></g>`);
-  box.insertAdjacentHTML('beforeend',`<div class="hole" data-p="${p}"><b>第${p}格</b><button type="button" data-d="-1" aria-label="${nm}邊第${p}格減少一個砝碼">−</button><output>0</output><button type="button" data-d="1" aria-label="${nm}邊第${p}格增加一個砝碼">＋</button></div>`);}
- box.addEventListener('click',e=>{const b=e.target.closest('button');if(b)add(k,+b.closest('.hole').dataset.p,+b.dataset.d)});
-});
-$$('.hit').forEach(c=>c.onclick=()=>add(c.dataset.side,+c.dataset.pos,1));
-wg.addEventListener('click',e=>{if(e.target.classList.contains('wt')){const g=e.target.closest('.wg');add(g.dataset.side,+g.dataset.pos,-1)}});
-$('#rst').onclick=()=>{st.l.fill(0);st.r.fill(0);render()};
-function render(){
- const tl=sum(st.l),tr=sum(st.r),ang=Math.max(-12,Math.min(12,(tr-tl)*1.5));
- $('#beam').style.transform=`rotate(${ang}deg)`;
- ['l','r'].forEach(k=>{
-  for(let p=1;p<=6;p++){
-   const n=st[k][p],x=CX+(k==='l'?-1:1)*p*U,g=$(`#w-${k}${p}`);
-   g.style.transform=`rotate(${-ang}deg)`;
-   let t='';
-   if(n){t=`<line class="str" x1="${x}" x2="${x}" y1="174" y2="${186+(n-1)*24}"/>`;
-    for(let i=0;i<n;i++)t+=`<rect class="wt" x="${x-17}" y="${186+i*24}" width="34" height="21" rx="3"/><text class="wl" x="${x}" y="${201+i*24}" pointer-events="none">50 g</text>`;}
-   g.innerHTML=t;
-   const hb=$(`.side[data-side=${k}] .hole[data-p="${p}"]`);hb.querySelector('output').textContent=n;hb.classList.toggle('on',n>0);
-  }
-  $(`.side[data-side=${k}] .tot`).textContent=cnt(st[k])+' 個';
- });
- const el=$('#status');el.className='';
- if(!tl&&!tr)el.textContent='還沒有掛砝碼';
- else if(tl===tr){el.textContent='蹺蹺板平衡了！';el.className='bal'}
- else el.textContent=tl>tr?'左邊下沉':'右邊下沉';
+const $=id=>document.getElementById(id);
+const S={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+const fill=(id,from,to)=>{const s=$(id);for(let i=from;i<=to;i++)s.add(new Option(i,i))};
+const H={};let cur=0,raf=0,nl=1,nr=4;if(Math.random()<.5){nl=4;nr=1}
+const lvl=()=>nl===nr;
+const POS=[];for(let p=1;p<=8;p++)POS.push(-p,p);
+function render(a){
+ const k=11.5,rad=a*Math.PI/180,c=Math.cos(rad),s=Math.sin(rad);
+ let h='<line x1="30" y1="100" x2="665" y2="100" stroke="var(--mu)" stroke-dasharray="4 3"/><text x="685" y="104" font-size="13" fill="var(--mu)" text-anchor="middle">cm</text><rect x="346" y="110" width="8" height="186" fill="#94a3b8"/><rect x="290" y="294" width="120" height="18" rx="2" fill="#2557b8"/>';
+ h+=`<g transform="rotate(${a} 350 100)"><rect x="30" y="96" width="42" height="8" fill="#64748b"/><rect x="628" y="96" width="46" height="8" fill="#64748b"/><rect x="69" y="88" width="5" height="24" fill="#e8962a"/><rect x="626" y="88" width="5" height="24" fill="#e8962a"/>`;
+ h+=`<rect x="${62-6.5*nl}" y="88" width="9" height="24" rx="2" fill="#475569" stroke="#cbd5e1" stroke-width="1"/><rect x="${631+6.5*nr}" y="88" width="9" height="24" rx="2" fill="#475569" stroke="#cbd5e1" stroke-width="1"/>`;
+ for(let i=0;i<16;i++)h+=`<rect x="${74+i*34.5}" y="89" width="34.5" height="22" fill="${i%2?'#dcc3a5':'#cc3030'}"/>`;
+ for(const p of POS){const x=350+p*3*k;h+=`<text x="${x}" y="82" font-size="13" text-anchor="middle" fill="var(--mu)">${Math.abs(p)*3}</text><circle cx="${x}" cy="106" r="4.5" fill="#fff" stroke="#3b82f6" stroke-width="1.3"/><circle cx="${x}" cy="106" r="14" fill="transparent" data-add="${p}" style="cursor:pointer"/>`}
+ h+='</g>';
+ for(const p of POS){const n=H[p]||0;if(!n)continue;const dx=p*3*k,x=350+dx*c-6*s,y=100+dx*s+6*c,col=p<0?'#3b82f6':'#f97316';
+  h+=`<line x1="${x}" y1="${y}" x2="${x}" y2="${y+12}" stroke="var(--mu)"/>`;
+  for(let j=0;j<n;j++)h+=`<rect x="${x-14}" y="${y+12+j*16}" width="28" height="15" rx="3" fill="${col}" data-rm="${p}" style="cursor:pointer"/><text x="${x}" y="${y+24+j*16}" font-size="11" text-anchor="middle" fill="#fff" pointer-events="none">1</text>`}
+ h+='<rect x="339" y="82" width="22" height="36" rx="3" fill="#2557b8"/><circle cx="350" cy="100" r="4" fill="#fff"/>';
+ $('sv').innerHTML=h}
+function go(t){cancelAnimationFrame(raf);const f=cur,t0=performance.now();
+ const step=n=>{const p=Math.min(1,(n-t0)/600),e=1-Math.pow(1-p,3);cur=f+(t-f)*e;render(cur);if(p<1)raf=requestAnimationFrame(step)};raf=requestAnimationFrame(step)}
+function draw(){
+ let L=0,R=0;const ls=[],rs=[];
+ for(const p of POS){const n=H[p]||0;if(!n)continue;const d=Math.abs(p)*3;if(p<0){L+=n*d;ls.push(`${n}×${d}`)}else{R+=n*d;rs.push(`${n}×${d}`)}}
+ const diff=R-L,tot=diff+(nr-nl)*6;
+ go(tot?Math.sign(tot)*Math.min(7,1.5+Math.abs(tot)*0.08):0);
+ document.querySelectorAll('[data-n]').forEach(b=>b.disabled=!!(L||R));
+ const lt=ls.join(' + '),rt=rs.join(' + ');
+ $('ls').innerHTML=`<b style="color:var(--w1)">◀ 左邊力矩</b><br>${lt?lt+' = <b>'+L+'</b>':'（尚未掛砝碼）'}`;
+ $('rs').innerHTML=`<b style="color:var(--w2)">右邊力矩 ▶</b><br>${rt?rt+' = <b>'+R+'</b>':'（尚未掛砝碼）'}`;
+ const st=$('st');
+ if(!lvl())st.innerHTML='<span class="bad">步驟一：槓桿還沒水平，請先調整平衡螺帽（螺帽往外，該端變重）</span>';
+ else if(!L&&!R)st.textContent='✅ 槓桿已調平衡！步驟二：點白點掛砝碼（點砝碼可取下）';
+ else if(!diff)st.innerHTML='<span class="ok">✅ 槓桿平衡！</span>';
+ else if(diff<0)st.innerHTML='<span class="bad">⬇️ 左邊下沉</span>';
+ else st.innerHTML='<span class="bad">右邊下沉 ⬇️</span>';
+ return{L,R,lt,rt}
 }
-const tb=$('#rows');
-for(let i=1;i<=6;i++)tb.insertAdjacentHTML('beforeend',`<tr><td>${i}</td>`+'<td><textarea rows="3"></textarea></td>'.repeat(4)+'<td><select aria-label="平衡嗎"><option></option><option>是</option><option>否</option></select></td></tr>');
-const fields=()=>$$('#sheet input,#sheet textarea,#sheet select'),KEY='lever-sheet-v2';
-const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(fields().map(f=>f.value)))}catch(e){}};
-try{const v=JSON.parse(localStorage.getItem(KEY)||'null');if(v)fields().forEach((f,i)=>{if(v[i]!=null)f.value=v[i]})}catch(e){}
-$('#sheet').addEventListener('input',save);$('#sheet').addEventListener('change',save);
-const fmt=a=>a.map((n,p)=>n?`${n}個掛第${p}格`:'').filter(Boolean).join('、')||'無';
-$('#rec').onclick=()=>{
- const m=$('#recmsg'),trs=$$('#rows tr');
- if(!cnt(st.l)&&!cnt(st.r)){m.textContent='請先掛上砝碼再記錄。';return}
- const row=trs.find(r=>[...r.querySelectorAll('textarea')].slice(0,2).every(i=>!i.value));
- if(!row){m.textContent='表格已經填滿，可以修改或清除舊資料。';return}
- const ins=row.querySelectorAll('textarea');ins[0].value=fmt(st.l);ins[1].value=fmt(st.r);
- row.querySelector('select').value=sum(st.l)===sum(st.r)?'是':'否';
- save();m.textContent=`已記錄到第 ${trs.indexOf(row)+1} 組，接著請自己寫出兩邊的算式與總和。`;
+$('sv').addEventListener('pointerdown',e=>{const t=e.target,a=t.getAttribute('data-add'),r=t.getAttribute('data-rm');
+ if(a!==null){if(!lvl()){$('st').innerHTML='<span class="bad">⚠️ 請先把平衡螺帽調到讓槓桿水平，才能掛砝碼</span>';return}const p=+a;H[p]=Math.min(5,(H[p]||0)+1);draw()}
+ else if(r!==null){const p=+r;H[p]=Math.max(0,(H[p]||0)-1);draw()}});
+let rows=[];try{rows=JSON.parse(S.get('lever_rows2')||'[]')}catch(e){}
+function table(){
+ $('tb').innerHTML=rows.map((r,i)=>`<tr><td>${i+1}</td><td>${r.lt||'—'}</td><td>${r.L}</td><td>${r.rt||'—'}</td><td>${r.R}</td><td>${r.L===r.R?'<span class="ok">平衡</span>':r.L>r.R?'左傾':'右傾'}</td><td class="noprint"><button class="g" style="padding:2px 8px" onclick="del(${i})">✕</button></td></tr>`).join('')||'<tr><td colspan="7" class="goal">尚無資料，請在上方操作後按「記錄」</td></tr>';
+ S.set('lever_rows2',JSON.stringify(rows));
+}
+window.del=i=>{rows.splice(i,1);table()};
+$('rec').onclick=()=>{const r=draw();if(!lvl()||(!r.L&&!r.R))return;rows.push(r);table()};
+$('rst').onclick=()=>{for(const p in H)delete H[p];draw()};
+document.querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>{const t=b.dataset.n,d=t[1]==='+'?1:-1;if(t[0]==='l')nl=Math.max(0,Math.min(5,nl+d));else nr=Math.max(0,Math.min(5,nr+d));draw()});
+function grade(){
+ const g=k=>document.querySelector(`[data-s=${k}]`).value.trim();
+ const nm=v=>/重|個|砝/.test(v)?'w':/距|cm/i.test(v)?'d':'';
+ const pair=(a,b)=>!!(nm(g(a))&&nm(g(b))&&nm(g(a))!==nm(g(b)));
+ const bal=rows.filter(r=>r.L===r.R&&r.L>0).length;
+ const it=[['0 調平衡',1,!!(g('b1')&&g('b2'))],['記錄超過 5 組',2,rows.length>=5],['平衡記錄超過 3 組',2,bal>=3],['預測位置',1,g('p1')!==''&&+g('p1')===6],['預測結果',1,g('p1r')==='平衡'],['規律（左邊）',2,pair('c1','c2')],['規律（右邊）',2,pair('c3','c4')],['挑戰 a',3,g('q1')!==''&&+g('q1')===12],['挑戰 b',3,g('q2')!==''&&+g('q2')===6],['挑戰 c',3,g('q3')!==''&&+g('q3')===12],['挑戰 d（多孔）',3,g('q4')!==''&&+g('q4')===5]];
+ const score=it.reduce((a,x)=>a+(x[2]?x[1]:0),0),max=it.reduce((a,x)=>a+x[1],0);
+ return{score,max,it,txt:it.map(x=>x[0]+':'+(x[2]?'✔':'✘')).join('，')}}
+function showG(G){$('gr').innerHTML=`<b>自動評分：${G.score} / ${G.max}</b><br>`+G.it.map(x=>`${x[2]?'✅':'❌'} ${x[0]}`).join('　')}
+$('gbtn').onclick=()=>showG(grade());
+const SCRIPT_URL='';// ← 把 Google Apps Script 網頁應用程式網址貼在這兩個引號中間
+$('sub').onclick=async()=>{
+ const m=$('subm'),d={};
+ document.querySelectorAll('[data-s]').forEach(e=>d[e.dataset.s]=e.value);
+ if(!d.nm){m.textContent='請先填寫姓名';return}
+ if(!SCRIPT_URL){m.textContent='⚠️ 老師尚未設定回傳網址，請改用列印或截圖繳交';return}
+ const G=grade();d.score=G.score;d.max=G.max;d.detail=G.txt;showG(G);
+ d.rows=rows.map((r,i)=>`#${i+1} 左 ${r.lt||'-'}=${r.L}｜右 ${r.rt||'-'}=${r.R}｜${r.L===r.R?'平衡':r.L>r.R?'左傾':'右傾'}`).join('\n');
+ m.textContent='送出中…';
+ try{await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(d)});m.textContent='✅ 已送出（'+new Date().toLocaleTimeString()+'）'}catch(e){m.textContent='❌ 送出失敗，請檢查網路後再試'}
 };
-$('#chk').onclick=()=>{const ok=+$('#ans').value===2,f=$('#fb');
- f.textContent=ok?'答對了！3 × 4 ＝ 12，右邊 2 × 6 ＝ 12。':'再算算看：兩邊的「砝碼數 × 力臂」要相等。';f.className=ok?'ok':'no'};
-$('#prt').onclick=()=>window.print();
-$('#sub').onclick=async()=>{
- const m=$('#subm'),w=$$('.who input').map(i=>i.value.trim());
- if(!SCRIPT_URL){m.textContent='尚未設定回傳網址。';m.className='no';return}
- if(w.some(x=>!x)){m.textContent='請先填好班級、座號和姓名。';m.className='no';return}
- const ta=$$('.q textarea').map(t=>t.value),bl=$$('.blank').map(t=>t.value);
- const d={班級:w[0],座號:w[1],姓名:w[2]};
- $$('#rows tr').forEach((r,i)=>{const c=[...r.querySelectorAll('textarea')].map(x=>x.value),n=i+1;
-  d[`第${n}組左邊掛法`]=c[0];d[`第${n}組右邊掛法`]=c[1];d[`第${n}組左邊計算`]=c[2];d[`第${n}組右邊計算`]=c[3];d[`第${n}組平衡`]=r.querySelector('select').value});
- Object.assign(d,{問題1:ta[0],問題2:ta[1],問題3空格一:bl[0],問題3空格二:bl[1],問題4答案:$('#ans').value,問題5心得:ta[2]});
- $('#sub').disabled=true;m.className='';m.textContent='送出中…';
- try{await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(d)});m.textContent='已送出給老師。重複送出會多一筆，以最後一筆為準。';m.className='ok'}
- catch(e){m.textContent='送出失敗，請檢查網路後再試一次。';m.className='no'}
- $('#sub').disabled=false;
-};
-let armed=false;
-$('#clr').onclick=e=>{
- if(!armed){armed=true;e.target.textContent='再按一次確認清除';setTimeout(()=>{armed=false;e.target.textContent='清除全部作答'},4000);return}
- fields().forEach(f=>f.value='');$('#fb').textContent='';$('#recmsg').textContent='';save();armed=false;e.target.textContent='清除全部作答';
-};
-render();
-})();
-</script>
-</body>
-</html>
+document.querySelectorAll('[data-s]').forEach(e=>{const v=S.get('lever_'+e.dataset.s);if(v!==null)e.value=v;e.oninput=e.onchange=()=>S.set('lever_'+e.dataset.s,e.value)});
+window.chk=(k,a,b)=>{const v=document.querySelector(`[data-s=${k}]`).value,s=b.nextElementSibling;
+ s.innerHTML=v===''?'':(+v===a?'<span class="ok">✅ 答對了！</span>':'<span class="bad">再想想：先算左邊的 重量×距離</span>')};
+draw();table();
+</script></body></html>
