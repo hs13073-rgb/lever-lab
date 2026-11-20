@@ -132,7 +132,7 @@ function grade(){
  return{score,max,it,txt:it.map(x=>x[0]+':'+(x[2]?'✔':'✘')).join('，')}}
 function showG(G){$('gr').innerHTML=`<b>自動評分：${G.score} / ${G.max}</b><br>`+G.it.map(x=>`${x[2]?'✅':'❌'} ${x[0]}`).join('　')}
 $('gbtn').onclick=()=>showG(grade());
-const SCRIPT_URL='';// ← 把 Google Apps Script 網頁應用程式網址貼在這兩個引號中間
+const SCRIPT_URL='https://script.google.com/macros/s/AKfycbzqpVt_FBNqilSYwh3BPT29qbmIg47fHQ0Ql3NEDoQyhDLld77PYguPNdw5eg6uhQ0kaw/exec';// ← 把 Google Apps Script 網頁應用程式網址貼在這兩個引號中間
 $('sub').onclick=async()=>{
  const m=$('subm'),d={};
  document.querySelectorAll('[data-s]').forEach(e=>d[e.dataset.s]=e.value);
